@@ -57,6 +57,13 @@ const Update = () => {
 
   return (
     <div className="page create">
+
+      <div className="detail-content">
+        <h3>{title}</h3>
+        <p>Description: {method}</p>
+        <p>Rating: {rating}👍️ </p>
+      </div>
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title:</label>
         <input 

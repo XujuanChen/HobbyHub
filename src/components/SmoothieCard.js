@@ -3,9 +3,7 @@ import supabase from "../config/supabaseClient"
 import { Link } from 'react-router-dom'
 
 const SmoothieCard = ({ smoothie, onDelete }) => {
-
   const [count, setCount] = useState(smoothie.rating)
-
   let datetime = smoothie.created_at.substring(0,10) + " " + smoothie.created_at.substring(11,19);
 
   const updateCount = async (event) => {
@@ -36,8 +34,10 @@ const SmoothieCard = ({ smoothie, onDelete }) => {
 
   return (
     <div className="smoothie-card">
-      <div> {datetime} </div>
-      <h3>{smoothie.title}</h3>
+      <p> {datetime} </p>
+      <Link to={"/" + smoothie.id}>
+        <h3>{smoothie.title}</h3>
+      </Link>
       <p>{smoothie.method}</p>
       <div className="rating" onClick={updateCount}>👍️{count}</div>
       <div className="buttons">
