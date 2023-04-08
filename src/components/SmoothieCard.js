@@ -35,7 +35,7 @@ const SmoothieCard = ({ smoothie, onDelete }) => {
   return (
     <div className="smoothie-card">
       <p> {datetime} </p>
-      <Link to={"/" + smoothie.id}>
+      <Link to={"/" + smoothie.id} className='title-link'>
         <h3>{smoothie.title}</h3>
       </Link>
       <p>{smoothie.method}</p>
