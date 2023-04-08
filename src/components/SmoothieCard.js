@@ -1,7 +1,23 @@
+import { useState } from 'react'
 import supabase from "../config/supabaseClient"
 import { Link } from 'react-router-dom'
 
 const SmoothieCard = ({ smoothie, onDelete }) => {
+
+  const [count, setCount] = useState(smoothie.rating)
+
+  let datetime = smoothie.created_at.substring(0,10) + " " + smoothie.created_at.substring(11,19);
+
+  const updateCount = async (event) => {
+    event.preventDefault();
+    // Update in Supabase
+    await supabase
+    .from('recipes')
+    .update({ rating: count + 1})
+    .eq('id', smoothie.id)
+    // Update State Variable
+    setCount((count) => count + 1);
+  }
 
   const handleDelete = async () => {
     const { data, error } = await supabase
@@ -15,15 +31,15 @@ const SmoothieCard = ({ smoothie, onDelete }) => {
     }
     if (data) {
       console.log(data)
-      onDelete(smoothie.id)
     }
   }
 
   return (
     <div className="smoothie-card">
+      <div> {datetime} </div>
       <h3>{smoothie.title}</h3>
       <p>{smoothie.method}</p>
-      <div className="rating">{smoothie.rating}</div>
+      <div className="rating" onClick={updateCount}>👍️{count}</div>
       <div className="buttons">
         <Link to={"/" + smoothie.id}>
           <i className="material-icons">edit</i>
