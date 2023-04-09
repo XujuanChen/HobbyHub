@@ -36,6 +36,7 @@ const Create = () => {
 
   return (
     <div className="page create">
+      <h1 className="detail-content text-center">Create Your Post</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title:</label>
         <input 
@@ -60,7 +61,7 @@ const Create = () => {
           onChange={(e) => setRating(e.target.value)}
         />
 
-        <button>Create Smoothie Recipe</button>
+        <button>Create Your Post</button>
 
         {formError && <p className="error">{formError}</p>}
       </form>

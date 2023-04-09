@@ -35,13 +35,13 @@ const SmoothieCard = ({ smoothie, onDelete }) => {
   return (
     <div className="smoothie-card">
       <p> {datetime} </p>
-      <Link to={"/" + smoothie.id} className='title-link'>
+      <Link to={"/details/" + smoothie.id} className='title-link'>
         <h3>{smoothie.title}</h3>
       </Link>
       <p>{smoothie.method}</p>
       <div className="rating" onClick={updateCount}>👍️{count}</div>
       <div className="buttons">
-        <Link to={"/" + smoothie.id}>
+        <Link to={"/edit/" + smoothie.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>delete</i>
