@@ -1,7 +1,7 @@
 import supabase from '../config/supabaseClient'
 import { useEffect, useState } from 'react'
 import SmoothieCard from '../components/SmoothieCard'
-
+import Success from './Success'
 
 const Home = () => {
   const [fetchError, setFetchError] = useState(null)
@@ -47,6 +47,7 @@ const Home = () => {
 
   return (
     <div className="page home">
+      <Success />
       {fetchError && (<p>{fetchError}</p>)}
       {smoothies && (
         <div className="smoothies">
