@@ -60,6 +60,7 @@ nav h1 {
   padding: 20px 0;
   line-height: 0px;
   text-align: center;
+  cursor: pointer;
 }
 .smoothie-card .buttons {
   text-align: right;
@@ -125,7 +126,7 @@ form button {
   max-width: 480px;
   margin: 0 auto;
   border-radius: 6px;
-  margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .title-link {

@@ -30,7 +30,7 @@ const Update = () => {
     }
     if (data) {
       setFormError(null)
-      navigate('/')
+      navigate('/article')
     }
   }
 
@@ -43,7 +43,7 @@ const Update = () => {
         .single()
 
       if (error) {
-        navigate('/', { replace: true })
+        navigate('/article', { replace: true })
       }
       if (data) {
         setTitle(data.title)
@@ -54,6 +54,22 @@ const Update = () => {
 
     fetchSmoothie()
   }, [id, navigate])
+
+  const handleDelete = async () => {
+    const { data, error } = await supabase
+      .from('recipes')
+      .delete()
+      .eq('id', id)
+      .select()
+    
+    if (error) {
+      console.log(error)
+    }
+    if (data) {
+      console.log(data)
+    }
+    navigate('/article')
+  }
 
   return (
     <div className="page create">
@@ -76,6 +92,7 @@ const Update = () => {
         <label htmlFor="method">Method:</label>
         <textarea 
           id="method"
+          rows='5'
           value={method}
           onChange={(e) => setMethod(e.target.value)}
         />
@@ -88,8 +105,8 @@ const Update = () => {
           onChange={(e) => setRating(e.target.value)}
         />
 
-        <button>Update Smoothie Recipe</button>
-
+        <button>Update </button> &nbsp;
+        <button onClick={handleDelete}>delete</button>
         {formError && <p className="error">{formError}</p>}
       </form>
     </div>

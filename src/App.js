@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <nav>
         <h1>HistoryHub</h1>
-        <Link to="/">Home</Link>
+        <Link to="/article">Home</Link>
         <Link to="/create">Create New Posts</Link>
       </nav>
 

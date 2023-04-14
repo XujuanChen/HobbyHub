@@ -30,7 +30,7 @@ const Create = () => {
     if (data) {
       console.log(data)
       setFormError(null)
-      navigate('/')
+      navigate('/article')
     }
   }
 
@@ -49,6 +49,7 @@ const Create = () => {
         <label htmlFor="method">Method:</label>
         <textarea 
           id="method"
+          rows='5'
           value={method}
           onChange={(e) => setMethod(e.target.value)}
         />
