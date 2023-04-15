@@ -39,7 +39,7 @@ const Details = () => {
       const createComment = async (e) => {
         e.preventDefault()
         await supabase
-          .from('comments')
+          .from('planb')
           .insert([{comment, post_id:id}])
           .select()
 
@@ -48,7 +48,7 @@ const Details = () => {
   
       const fetchComments = async () => {
         const { data, error } = await supabase
-          .from('comments')
+          .from('planb')
           .select()
           .eq('post_id', id)
           // console.log("data", data[0].comment)

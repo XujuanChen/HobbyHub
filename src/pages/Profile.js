@@ -29,6 +29,9 @@ const Profile = () => {
         .eq('id', user.id)
         .single()
 
+        if (error) {
+            console.log(Error)
+        }
         if (data) {
             setProfile(data)
             // console.log(data)

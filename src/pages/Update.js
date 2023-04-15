@@ -66,7 +66,7 @@ const Update = () => {
       console.log(error)
     }
     if (data) {
-      console.log(data)
+      // console.log(data)
     }
     navigate('/article')
   }
