@@ -2,23 +2,24 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate, Navigate } from 'react-router-dom'
 import supabase from "../config/supabaseClient"
 import Comment from "./Comment"
+import Profile from './Profile'
 
 const Details = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-  
     const [title, setTitle] = useState('')
     const [method, setMethod] = useState('')
     const [rating, setRating] = useState('')
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
-    
-    useEffect(() => {
-        fetchSmoothie()
-        fetchComments()
-      }, [id, navigate])
 
-      const fetchSmoothie = async () => {
+    useEffect(() => {
+      fetchSmoothie();
+      fetchComments();
+
+    }, [id, navigate])
+
+      const fetchSmoothie = async() => {
         const { data, error } = await supabase
           .from('recipes')
           .select()
@@ -51,18 +52,16 @@ const Details = () => {
           .select()
           .eq('post_id', id)
           // console.log("data", data[0].comment)
-
           if (data) {
             setComments(data)
             // console.log("comments",comments)
           }
-
       }
-
 
   return (
     <div className="page create">
         <div className="detail-content">
+            <Profile />
             <h3>{title}</h3>
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>

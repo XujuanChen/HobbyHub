@@ -146,3 +146,23 @@ form button {
   border-radius: 6px;
   margin-top: 4rem;
 }
+
+.avatar-container {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.avatar-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-left: 0;
+  background-color: #f2f2f2;
+}
+
+.avatar-text {
+  margin-left: 10px;
+  text-align: center;
+  justify-content: center;
+  padding-top: 40px;
+}

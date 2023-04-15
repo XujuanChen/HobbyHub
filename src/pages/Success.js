@@ -8,12 +8,14 @@ import { useNavigate } from 'react-router-dom'
 const Success = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState({});
-
+    
     useEffect(() => {
         const getUserData = async() => {
-            await supabase.auth.getUser().then((value)=>{
+            await supabase.auth
+            .getUser()
+            .then((value)=>{
                 if (value.data?.user) {
-                    // console.log(value.data.user)
+                    // console.log(value.data.user.id)
                     setUser(value.data.user)
                 }
             })
@@ -30,7 +32,7 @@ const Success = () => {
   return (
     <div>
         {Object.keys(user).length > 0 ? 
-        <>
+        <>  <p> user_id: {user.id}</p>
             <button onClick={()=>signOutUser()}>Sign Out</button>
         </>
         :

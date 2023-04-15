@@ -2,6 +2,7 @@ import supabase from '../config/supabaseClient'
 import { useEffect, useState } from 'react'
 import SmoothieCard from '../components/SmoothieCard'
 import Success from './Success'
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const Home = () => {
   const [fetchError, setFetchError] = useState(null)
@@ -9,12 +10,7 @@ const Home = () => {
   const [orderBy, setOrderBy] = useState('created_at')
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
-
-  // const handleDelete = (id) => {
-  //   setSmoothies(prevSmoothies => {
-  //     return prevSmoothies.filter(sm => sm.id !== id)
-  //   })
-  // }
+  const user = useUser();
 
   useEffect(() => {
     const fetchSmoothies = async () => {
@@ -47,7 +43,8 @@ const Home = () => {
 
   return (
     <div className="page home">
-      <Success />
+      <Success  />
+
       {fetchError && (<p>{fetchError}</p>)}
       {smoothies && (
         <div className="smoothies">

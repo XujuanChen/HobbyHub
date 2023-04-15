@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import supabase from "../config/supabaseClient"
 
@@ -8,7 +8,24 @@ const Create = () => {
   const [title, setTitle] = useState('')
   const [method, setMethod] = useState('')
   const [rating, setRating] = useState('')
+  const [author, setAuthor] = useState('')
+  const [user, setUser] = useState({});
   const [formError, setFormError] = useState(null)
+
+  useEffect(() => {
+    const getUserData = async() => {
+        await supabase.auth
+        .getUser()
+        .then((value)=>{
+            if (value.data?.user) {
+                // console.log(value.data.user.id)
+                setUser(value.data.user)
+            }
+        })
+    }
+    getUserData();
+    
+}, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -20,7 +37,7 @@ const Create = () => {
 
     const { data, error } = await supabase
       .from('recipes')
-      .insert([{ title, method, rating }])
+      .insert([{ title, method, rating, author:user.id}])
       .select()
 
     if (error) {

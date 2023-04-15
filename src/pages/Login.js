@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import supabase from "../config/supabaseClient"
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
@@ -8,6 +8,7 @@ const Login = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
+
       supabase.auth.onAuthStateChange(async(event) => {
         if (event === 'SIGNED_IN') {
           // forward to success page
@@ -17,6 +18,8 @@ const Login = () => {
           navigate('/');
         }
       })
+
+
     }, [])
     
   return (
@@ -24,7 +27,7 @@ const Login = () => {
         <Auth
             supabaseClient={supabase}
             appearance={{ theme: ThemeSupa }}
-            providers={['google', 'facebook', 'twitter']}
+            providers={['github']}
         />
     </div>
   )
