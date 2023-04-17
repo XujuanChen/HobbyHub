@@ -1,49 +1,52 @@
 import { useEffect, useState } from "react"
 import supabase from "../config/supabaseClient"
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const Profile = () => {
-    const [user, setUser] = useState({});
+    const user = useUser()
+    const [author, setAuthor] = useState('')
     const [profile, setProfile] = useState('')
-    useEffect(() => {
-        const getUserData = async() => {
-            await supabase.auth
-            .getUser()
-            .then((value)=>{
-                if (value.data?.user) {
-                    // console.log(value.data)
-                    setUser(value.data.user)
-                }
-            })
-        }
-        getUserData();
-    }, [])
 
     useEffect(() => {
+        fetchAuthor();
         fetchProfiles();
     }, [])
 
-      const fetchProfiles = async() => {
+    const fetchAuthor = async() => {
         const {data, error} = await supabase
-        .from('profiles')
+        .from('recipes')
         .select()
-        .eq('id', user.id)
+        .eq('author', user.id)
         .single()
-
         if (error) {
             console.log(Error)
         }
         if (data) {
-            setProfile(data)
+            setAuthor(data)
             // console.log(data)
         }
-      }
+    }
 
-      console.log(profile.avatar)
+        const fetchProfiles = async() => {
+            const {data, error} = await supabase
+            .from('profiles')
+            .select()
+            .eq('id', author)
+            .single()
+            if (error) {
+                console.log(Error)
+            }
+            if (data) {
+                setProfile(data)
+                // console.log(data)
+            }
+        }
+
   return (
     <div className="avatar-container">
-    {profile.avatar ? <img src={profile.avatar} alt="avatar" className="avatar-img"/>
+    {author.avatar ? <img src={profile.avatar} alt="avatar" className="avatar-img"/>
     : <img src="https://gravatar.com/avatar/674acf50fc1be8e94658d58278307f5d?s=400&d=robohash&r=x" alt="avatar" className="avatar-img"/> }
-    <p className="avatar-text">User: {user.email}</p>
+    <p className="avatar-text">Author: {user.email}</p>
     </div>
   )
 }

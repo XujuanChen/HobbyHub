@@ -25,22 +25,6 @@ const SmoothieCard = ({ smoothie }) => {
     setCount((count) => count + 1);
   }
 
-  // const handleDelete = async () => {
-  //   const { data, error } = await supabase
-  //     .from('recipes')
-  //     .delete()
-  //     .eq('id', smoothie.id)
-  //     .select()
-    
-  //   if (error) {
-  //     console.log(error)
-  //   }
-  //   if (data) {
-  //     console.log(data)
-  //   }
-  //   navigate('/article')
-  // }
-
   return (
     <div className="smoothie-card">
       <p> {datetime} </p>
@@ -55,7 +39,6 @@ const SmoothieCard = ({ smoothie }) => {
         <Link to={"/edit/" + smoothie.id}>
           <i className="material-icons">edit</i>
         </Link>
-        {/* <i className="material-icons" onClick={handleDelete}>delete</i> */}
       </div>
     </div>
   )
