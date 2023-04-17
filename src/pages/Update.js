@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 import supabase from "../config/supabaseClient"
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 
 const Update = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-
+  const user = useUser()
   const [title, setTitle] = useState('')
   const [method, setMethod] = useState('')
   const [rating, setRating] = useState('')
+  const [author, setAuthor] = useState('')
+  const [imgName, setImgName] = useState('')
   const [formError, setFormError] = useState(null)
 
   const handleSubmit = async (e) => {
@@ -21,7 +24,7 @@ const Update = () => {
 
     const { data, error } = await supabase
       .from('recipes')
-      .update({ title, method, rating })
+      .update({ title, method, rating, })
       .eq('id', id)
       .select()
 
@@ -49,6 +52,8 @@ const Update = () => {
         setTitle(data.title)
         setMethod(data.method)
         setRating(data.rating)
+        setAuthor(data.author)
+        setImgName(data.image_id)
       }
     }
 
@@ -56,17 +61,17 @@ const Update = () => {
   }, [id, navigate])
 
   const handleDelete = async () => {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('recipes')
       .delete()
       .eq('id', id)
       .select()
+
+      await supabase.storage.from('images')
+      .remove([author+'/'+imgName])
     
     if (error) {
       console.log(error)
-    }
-    if (data) {
-      // console.log(data)
     }
     navigate('/article')
   }
@@ -104,7 +109,6 @@ const Update = () => {
           value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
-
         <button>Update </button> &nbsp;
         <button onClick={handleDelete}>delete</button>
         {formError && <p className="error">{formError}</p>}

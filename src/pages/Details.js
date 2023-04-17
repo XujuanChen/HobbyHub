@@ -3,7 +3,11 @@ import { useParams, useNavigate, Navigate } from 'react-router-dom'
 import supabase from "../config/supabaseClient"
 import Comment from "./Comment"
 import Profile from './Profile'
+// import Image from "./Image"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+// https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/bcb589df-f087-48fa-bb37-fb706fa7e4f1/1bffbc58-523b-4798-8215-6efca4cf9450
+const CDNURL = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/'
+// CDNURL + user.id +'/' +image.name
 
 const Details = () => {
     const { id } = useParams()
@@ -14,6 +18,7 @@ const Details = () => {
     const [rating, setRating] = useState('')
     const [author, setAuthor] = useState('')
     const [comment, setComment] = useState('')
+    const [imgName, setImgName] = useState('')
     const [comments, setComments] = useState([])
 
     useEffect(() => {
@@ -32,7 +37,8 @@ const Details = () => {
         setMethod(data.method)
         setRating(data.rating)
         setAuthor(data.author)
-        console.log("a",author)
+        setImgName(data.image_id)
+        console.log("details-author",author)
       } else {
         navigate('/article', { replace: true })
         console.log(error)
@@ -65,6 +71,9 @@ const Details = () => {
         <div className="detail-content">
             <Profile author={author} />
             <h3>{title}</h3>
+            {imgName? 
+            <img src={CDNURL+author+"/"+imgName} alt="image" style={{maxWidth:480, margin:"auto"}}/>
+            : null}
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>

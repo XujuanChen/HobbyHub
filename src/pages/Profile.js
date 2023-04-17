@@ -16,7 +16,7 @@ const Profile = ({ author }) => {
       .single();
     if (data) {
       setProfile(data);
-      console.log("profile", profile);
+      // console.log("profile", profile);
     } else {
       console.log(error);
     }

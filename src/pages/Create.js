@@ -7,36 +7,12 @@ import { v4 as uuidv4 } from 'uuid'
 const Create = () => {
   const navigate = useNavigate()
   const user = useUser()
-
   const [title, setTitle] = useState('')
   const [method, setMethod] = useState('')
   const [rating, setRating] = useState('')
-  const [author, setAuthor] = useState('')
   const [formError, setFormError] = useState(null)
-  const [image, setImage] = useState([])
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (!title || !method || !rating) {
-      setFormError('Please fill in all the fields correctly.')
-      return
-    }
-
-    const { data, error } = await supabase
-      .from('recipes')
-      .insert([{ title, method, rating, author:user.id}])
-      .select()
-    if (error) {
-      console.log(error)
-      setFormError('Please fill in all the fields correctly.')
-    }
-    if (data) {
-      console.log(data)
-      setFormError(null)
-      navigate('/article')
-    }
-  }
+  const [images, setImages] = useState([])
+  const CDNURL = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/'
 
   const getImages = async() => {
     const {data, error} = await supabase
@@ -45,10 +21,13 @@ const Create = () => {
       .list(user?.id+'/', {
         limits:100,
         offset: 0,
-        sortBy: {column:'name', order:'asc'}
+        sortBy: {column:'created_at', order:'desc'}
       });
     if (data) {
-      setImage(data)
+      setImages(data[0])
+      // console.log("details-images",data[0])
+      // console.log("images", images)
+      // console.log("img-id", images.id)
     } else {
       alert(error)
     }
@@ -66,6 +45,29 @@ const Create = () => {
         console.log(error)
       }
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!title || !method || !rating) {
+      setFormError('Please fill in all the fields correctly.')
+      return
+    }
+    const { data, error } = await supabase
+      .from('recipes')
+      .insert([{ title, method, rating, author:user.id, image_id:images?.name} ])
+      .select()
+    if (error) {
+      console.log(error)
+      setFormError('Please fill in all the fields correctly.')
+    }
+
+    if (data) {
+      console.log(data)
+      setFormError(null)
+      navigate('/article')
+    }
+  }
+
+
 
   return (
     <div className="page create">
@@ -98,7 +100,6 @@ const Create = () => {
         />
 
         <button>Create Your Post</button>
-
         {formError && <p className="error">{formError}</p>}
       </form>
     </div>

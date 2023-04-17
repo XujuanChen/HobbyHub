@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import supabase from "../config/supabaseClient"
 import { Link, useNavigate } from 'react-router-dom'
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 
 const Card = ({ smoothie }) => {
   const navigate = useNavigate()
+  const user = useUser()
   const [count, setCount] = useState(smoothie.rating)
   let datetime = smoothie.created_at.substring(0,10) + " " + smoothie.created_at.substring(11,19);
-
   const getDate = () => {
     let time = Date.parse(smoothie.created_at);
     let date = new Date(time);
@@ -35,11 +36,14 @@ const Card = ({ smoothie }) => {
       </Link>
 
       <div className="rating" onClick={updateCount}>👍️{count}</div>
+      {user.id === smoothie.author ? 
       <div className="buttons">
         <Link to={"/edit/" + smoothie.id}>
           <i className="material-icons">edit</i>
         </Link>
       </div>
+      : null
+      }
     </div>
   )
 }
