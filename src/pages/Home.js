@@ -1,6 +1,6 @@
 import supabase from '../config/supabaseClient'
 import { useEffect, useState } from 'react'
-import SmoothieCard from '../components/SmoothieCard'
+import Card from '../components/Card'
 import Success from './Success'
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 
@@ -59,9 +59,9 @@ const Home = () => {
             {
               filteredResults.length>0 
               ? 
-              (filteredResults.map(smoothie=>(<SmoothieCard key={smoothie.id} smoothie={smoothie} />))) 
+              (filteredResults.map(smoothie=>(<Card key={smoothie.id} smoothie={smoothie} />))) 
               :
-              (smoothies.map(smoothie => (<SmoothieCard key={smoothie.id} smoothie={smoothie}  />)))
+              (smoothies.map(smoothie => (<Card key={smoothie.id} smoothie={smoothie}  />)))
             }
           </div>
         </div>

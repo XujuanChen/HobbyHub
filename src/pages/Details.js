@@ -12,6 +12,7 @@ const Details = () => {
     const [title, setTitle] = useState('')
     const [method, setMethod] = useState('')
     const [rating, setRating] = useState('')
+    const [author, setAuthor] = useState('')
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
 
@@ -20,53 +21,54 @@ const Details = () => {
       fetchComments();
     }, [id, navigate])
 
-      const fetchSmoothie = async() => {
-        const { data, error } = await supabase
-          .from('recipes')
-          .select()
-          .eq('id', id)
-          .single()
-        if (error) {
-          navigate('/article', { replace: true })
-        }
-        if (data) {
-          setTitle(data.title)
-          setMethod(data.method)
-          setRating(data.rating)
-        }
+    const fetchSmoothie = async() => {
+      const { data, error } = await supabase
+      .from('recipes')
+      .select()
+      .eq('id', id)
+      .single()
+      if (data) {
+        setTitle(data.title)
+        setMethod(data.method)
+        setRating(data.rating)
+        setAuthor(data.author)
+        console.log("a",author)
+      } else {
+        navigate('/article', { replace: true })
+        console.log(error)
       }
-
-      const createComment = async (e) => {
-        e.preventDefault()
-        await supabase
-          .from('planb')
-          .insert([{comment, post_id:id, author: user.id}])
-          .select()
-
-        navigate(`/article`)
+    }
+    
+    const createComment = async (e) => {
+      e.preventDefault()
+      await supabase
+      .from('planb')
+      .insert([{comment, post_id:id, author: user.id}])
+      .select()
+      navigate(`/article`)
+    }
+    
+    const fetchComments = async () => {
+      const { data, error } = await supabase
+      .from('planb')
+      .select()
+      .eq('post_id', id)
+      // console.log("data", data[0].comment)
+      if (data) {
+        setComments(data)
+        // console.log("comments",comments)
       }
-  
-      const fetchComments = async () => {
-        const { data, error } = await supabase
-          .from('planb')
-          .select()
-          .eq('post_id', id)
-          // console.log("data", data[0].comment)
-          if (data) {
-            setComments(data)
-            // console.log("comments",comments)
-          }
-      }
+    }
 
   return (
     <div className="page create">
         <div className="detail-content">
-            <Profile />
+            <Profile author={author} />
             <h3>{title}</h3>
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>
-        {comments && comments.map((ct)=> <Comment key={ct.id} cmt = {ct.comment} />)}
+        {comments && comments.map((ct)=> <Comment key={ct.id} cmt = {ct} />)}
         
       <form onSubmit={createComment}>
         <label htmlFor="comment">Leave Your Comments:</label>

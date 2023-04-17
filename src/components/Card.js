@@ -2,7 +2,7 @@ import { useState } from 'react'
 import supabase from "../config/supabaseClient"
 import { Link, useNavigate } from 'react-router-dom'
 
-const SmoothieCard = ({ smoothie }) => {
+const Card = ({ smoothie }) => {
   const navigate = useNavigate()
   const [count, setCount] = useState(smoothie.rating)
   let datetime = smoothie.created_at.substring(0,10) + " " + smoothie.created_at.substring(11,19);
@@ -44,4 +44,4 @@ const SmoothieCard = ({ smoothie }) => {
   )
 }
 
-export default SmoothieCard
+export default Card
