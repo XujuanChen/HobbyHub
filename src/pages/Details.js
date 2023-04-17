@@ -3,10 +3,12 @@ import { useParams, useNavigate, Navigate } from 'react-router-dom'
 import supabase from "../config/supabaseClient"
 import Comment from "./Comment"
 import Profile from './Profile'
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 
 const Details = () => {
     const { id } = useParams()
     const navigate = useNavigate()
+    const user = useUser()
     const [title, setTitle] = useState('')
     const [method, setMethod] = useState('')
     const [rating, setRating] = useState('')
@@ -16,7 +18,6 @@ const Details = () => {
     useEffect(() => {
       fetchSmoothie();
       fetchComments();
-
     }, [id, navigate])
 
       const fetchSmoothie = async() => {
@@ -25,7 +26,6 @@ const Details = () => {
           .select()
           .eq('id', id)
           .single()
-  
         if (error) {
           navigate('/article', { replace: true })
         }
@@ -40,7 +40,7 @@ const Details = () => {
         e.preventDefault()
         await supabase
           .from('planb')
-          .insert([{comment, post_id:id}])
+          .insert([{comment, post_id:id, author: user.id}])
           .select()
 
         navigate(`/article`)
@@ -66,9 +66,7 @@ const Details = () => {
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>
-        {comments && 
-          comments.map((ct)=> <Comment key={ct.id} cmt = {ct.comment} />)
-        }
+        {comments && comments.map((ct)=> <Comment key={ct.id} cmt = {ct.comment} />)}
         
       <form onSubmit={createComment}>
         <label htmlFor="comment">Leave Your Comments:</label>
