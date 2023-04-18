@@ -5,6 +5,7 @@ import Comment from "./Comment"
 import Profile from './Profile'
 // import Image from "./Image"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import Loading from "./Loading"
 // https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/bcb589df-f087-48fa-bb37-fb706fa7e4f1/1bffbc58-523b-4798-8215-6efca4cf9450
 const CDNURL = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/'
 // CDNURL + user.id +'/' +image.name
@@ -20,6 +21,7 @@ const Details = () => {
     const [comment, setComment] = useState('')
     const [imgName, setImgName] = useState('')
     const [comments, setComments] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
       fetchSmoothie();
@@ -27,6 +29,7 @@ const Details = () => {
     }, [id, navigate])
 
     const fetchSmoothie = async() => {
+      setLoading(true)
       const { data, error } = await supabase
       .from('recipes')
       .select()
@@ -38,10 +41,12 @@ const Details = () => {
         setRating(data.rating)
         setAuthor(data.author)
         setImgName(data.image_id)
+        setLoading(false)
         console.log("details-author",author)
       } else {
         navigate('/article', { replace: true })
         console.log(error)
+        setLoading(false)
       }
     }
     
@@ -55,6 +60,7 @@ const Details = () => {
     }
     
     const fetchComments = async () => {
+      setLoading(true)
       const { data, error } = await supabase
       .from('planb')
       .select()
@@ -63,6 +69,10 @@ const Details = () => {
       if (data) {
         setComments(data)
         // console.log("comments",comments)
+        setLoading(false)
+      }else{
+        console.log(error)
+        setLoading(false)
       }
     }
 
@@ -77,7 +87,15 @@ const Details = () => {
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>
-        {comments && comments.map((ct)=> <Comment key={ct.id} cmt = {ct} />)}
+        
+        {comments && comments.map((ct)=>  {
+        return (
+        <>
+          <Loading  loading={loading}/>
+          <Comment key={ct.id} cmt = {ct} />
+        </>
+        )}
+        )}
         
       <form onSubmit={createComment}>
         <label htmlFor="comment">Leave Your Comments:</label>

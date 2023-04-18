@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import Success from './Success'
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import Loading from './Loading'
 
 const Home = () => {
   const [fetchError, setFetchError] = useState(null)
@@ -10,10 +11,12 @@ const Home = () => {
   const [orderBy, setOrderBy] = useState('created_at')
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
+  const [loading, setLoading] = useState(false)
   const user = useUser();
 
   useEffect(() => {
     const fetchSmoothies = async () => {
+      setLoading(true)
       const { data, error } = await supabase
         .from('recipes')
         .select()
@@ -22,10 +25,12 @@ const Home = () => {
       if (error) {
         setFetchError('Could not fetch the smoothies')
         setSmoothies(null)
+        setLoading(false)
       }
       if (data) {
         setSmoothies(data)
         setFetchError(null)
+        setLoading(false)
       }
     }
     fetchSmoothies()
@@ -44,6 +49,7 @@ const Home = () => {
   return (
     <div className="page home">
       <Success  />
+      <Loading loading={loading} />
 
       {fetchError && (<p>{fetchError}</p>)}
       {smoothies && (

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import supabase from "../config/supabaseClient"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 import { v4 as uuidv4 } from 'uuid'
+import Loading from "./Loading"
 
 const Create = () => {
   const navigate = useNavigate()
@@ -12,9 +13,11 @@ const Create = () => {
   const [rating, setRating] = useState('')
   const [formError, setFormError] = useState(null)
   const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(false)
   const CDNURL = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/'
 
   const getImages = async() => {
+    setLoading(true)
     const {data, error} = await supabase
       .storage
       .from("images")
@@ -28,8 +31,10 @@ const Create = () => {
       // console.log("details-images",data[0])
       // console.log("images", images)
       // console.log("img-id", images.id)
+      setLoading(false)
     } else {
       alert(error)
+      setLoading(false)
     }
   }
 
@@ -52,26 +57,28 @@ const Create = () => {
       return
     }
     const { data, error } = await supabase
+    setLoading(true)
       .from('recipes')
       .insert([{ title, method, rating, author:user.id, image_id:images?.name} ])
       .select()
     if (error) {
       console.log(error)
       setFormError('Please fill in all the fields correctly.')
+      setLoading(false)
     }
 
     if (data) {
       console.log(data)
       setFormError(null)
       navigate('/article')
+      setLoading(false)
     }
   }
-
-
 
   return (
     <div className="page create">
       <h1 className="detail-content text-center">Create Your Post</h1>
+      <Loading loading={loading} />
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title:</label>
         <input 
