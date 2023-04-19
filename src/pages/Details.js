@@ -79,6 +79,7 @@ const Details = () => {
     <div className="page create">
         <div className="detail-content">
             <Profile author={author} />
+            {loading?<Loading  loading={loading}/> : null}
             <h3>{title}</h3>
             { imgName? 
             <>
@@ -93,7 +94,6 @@ const Details = () => {
               </video>
             </>           
             : null} */}
-            {loading?<Loading  loading={loading}/> : null}
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>
