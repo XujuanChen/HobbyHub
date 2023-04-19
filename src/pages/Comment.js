@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import supabase from "../config/supabaseClient";
+// import supabase from "../config/supabaseClient";
 import Loading from "./Loading";
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const Comment = ({ cmt }) => {
+  const supabase = useSupabaseClient()
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(false)
 

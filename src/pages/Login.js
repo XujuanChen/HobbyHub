@@ -6,20 +6,17 @@ import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const navigate = useNavigate()
-
     useEffect(() => {
-
-      supabase.auth.onAuthStateChange(async(event) => {
+      supabase.auth.onAuthStateChange(async(event, session) => {
         if (event === 'SIGNED_IN') {
           // forward to success page
+          console.log("session",session)
           navigate("/article");
         } else {
           // forward to localhost:3000
           navigate('/');
         }
       })
-
-
     }, [])
     
   return (

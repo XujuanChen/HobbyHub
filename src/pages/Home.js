@@ -1,4 +1,4 @@
-import supabase from '../config/supabaseClient'
+// import supabase from '../config/supabaseClient'
 import { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import Success from './Success'
@@ -13,6 +13,7 @@ const Home = () => {
   const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(false)
   const user = useUser();
+  const supabase = useSupabaseClient()
 
   useEffect(() => {
     const fetchSmoothies = async () => {

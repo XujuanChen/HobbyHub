@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate, Navigate } from 'react-router-dom'
-import supabase from "../config/supabaseClient"
+// import supabase from "../config/supabaseClient"
 import Comment from "./Comment"
 import Profile from './Profile'
 // import Image from "./Image"
@@ -9,11 +9,13 @@ import Loading from "./Loading"
 // https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/bcb589df-f087-48fa-bb37-fb706fa7e4f1/1bffbc58-523b-4798-8215-6efca4cf9450
 const CDNURL = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/'
 // CDNURL + user.id +'/' +image.name
+const CDNVIDEO = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/videos/'
 
 const Details = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const user = useUser()
+    const supabase = useSupabaseClient()
     const [title, setTitle] = useState('')
     const [method, setMethod] = useState('')
     const [rating, setRating] = useState('')
@@ -84,6 +86,14 @@ const Details = () => {
             {imgName? 
             <img src={CDNURL+author+"/"+imgName} alt="image" style={{maxWidth:480, margin:"auto"}}/>
             : null}
+            {/* {videoname? 
+            <>
+              <video width="320" height="240" controls>
+                <source src={CDNVIDEO+videoname} type="video/mp4" />
+                  Your browser does not support the video tag.
+              </video>
+            </>           
+            : null} */}
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>

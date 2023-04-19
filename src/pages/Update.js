@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
-import supabase from "../config/supabaseClient"
+// import supabase from "../config/supabaseClient"
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
 
 const Update = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const user = useUser()
+  const supabase = useSupabaseClient()
   const [title, setTitle] = useState('')
   const [method, setMethod] = useState('')
   const [rating, setRating] = useState('')
   const [author, setAuthor] = useState('')
   const [imgName, setImgName] = useState('')
+  const [videoname, setVideoname] = useState('')
   const [formError, setFormError] = useState(null)
 
   const handleSubmit = async (e) => {
@@ -54,6 +56,7 @@ const Update = () => {
         setRating(data.rating)
         setAuthor(data.author)
         setImgName(data.image_id)
+        setVideoname(data.video_id)
       }
     }
 
@@ -69,6 +72,9 @@ const Update = () => {
 
       await supabase.storage.from('images')
       .remove([author+'/'+imgName])
+
+      await supabase.storage.from('videos')
+      .remove([videoname])
     
     if (error) {
       console.log(error)

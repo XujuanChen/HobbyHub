@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import supabase from "../config/supabaseClient";
+// import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const Success = () => {
   const navigate = useNavigate();
   const user = useUser();
+  const supabase = useSupabaseClient()
   const [profile, setProfile] = useState("");
+
   useEffect(() => {
     fetchAuthor();
   }, []);
@@ -37,7 +39,7 @@ const Success = () => {
               <>
                 <img src={profile.avatar} alt="avatar" className="avatar-img" />
                 <p className="avatar-text">
-                  Welcome! {profile.name} : {user.id}
+                  Welcome! {profile.name} : {profile.id}
                 </p>
               </>
             ) : (
