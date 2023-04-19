@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 // import supabase from "../config/supabaseClient"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react"
 import { v4 as uuidv4 } from 'uuid'
 import Loading from "./Loading"
 

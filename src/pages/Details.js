@@ -3,8 +3,7 @@ import { useParams, useNavigate, Navigate } from 'react-router-dom'
 // import supabase from "../config/supabaseClient"
 import Comment from "./Comment"
 import Profile from './Profile'
-// import Image from "./Image"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react"
 import Loading from "./Loading"
 // https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/bcb589df-f087-48fa-bb37-fb706fa7e4f1/1bffbc58-523b-4798-8215-6efca4cf9450
 const CDNURL = 'https://qeptbbxyaugavuiltahk.supabase.co/storage/v1/object/public/images/'
@@ -44,7 +43,7 @@ const Details = () => {
         setAuthor(data.author)
         setImgName(data.image_id)
         setLoading(false)
-        console.log("details-author",author)
+        // console.log("details-author:",author)       
       } else {
         navigate('/article', { replace: true })
         console.log(error)
@@ -97,14 +96,9 @@ const Details = () => {
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>
-        
-        {comments && comments.map((ct)=>  {
-        return (
-        <>
-          <Loading  loading={loading}/>
+        <Loading loading={loading} />
+        {comments && comments.map((ct)=> 
           <Comment key={ct.id} cmt = {ct} />
-        </>
-        )}
         )}
         
       <form onSubmit={createComment}>

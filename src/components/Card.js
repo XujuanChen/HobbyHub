@@ -1,11 +1,10 @@
 import { useState } from "react";
 // import supabase from "../config/supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 import Loading from "../pages/Loading";
 
 const Card = ({ smoothie }) => {
-  const navigate = useNavigate();
   const supabase = useSupabaseClient()
   const user = useUser();
   const [count, setCount] = useState(smoothie.rating);

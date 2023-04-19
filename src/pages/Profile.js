@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 // import supabase from "../config/supabaseClient";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 
-const Profile = ({ author }) => {
+const Profile = ({author}) => {
   const [profile, setProfile] = useState("");
   const supabase = useSupabaseClient()
+
   useEffect(() => {
-    fetchAuthor();
+    if (author) {
+      fetchAuthor();
+    }
   }, [author] );
 
   const fetchAuthor = async () => {

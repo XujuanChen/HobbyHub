@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 // import supabase from "../config/supabaseClient"
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react"
 
 const Update = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const user = useUser()
   const supabase = useSupabaseClient()
   const [title, setTitle] = useState('')
   const [method, setMethod] = useState('')

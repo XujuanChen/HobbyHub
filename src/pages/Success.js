@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 // import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 
 const Success = () => {
   const navigate = useNavigate();
@@ -10,23 +10,28 @@ const Success = () => {
   const [profile, setProfile] = useState("");
 
   useEffect(() => {
-    fetchAuthor();
-  }, []);
+    if (user) {
+      fetchAuthor();
+    }
+  }, [user]);
+
   const fetchAuthor = async () => {
     const { data, error } = await supabase
       .from("profiles")
       .select()
-      .eq("id", user.id)
+      .eq("id", user?.id)
       .single();
     if (data) {
       setProfile(data);
     } else {
       console.log(error);
     }
+    // console.log("success",session)
   };
 
   const signOutUser = async () => {
     await supabase.auth.signOut();
+
     navigate("/");
   };
 
@@ -35,22 +40,12 @@ const Success = () => {
       {user ? (
         <>
           <div className="avatar-container">
-            {profile ? (
               <>
                 <img src={profile.avatar} alt="avatar" className="avatar-img" />
                 <p className="avatar-text">
                   Welcome! {profile.name} : {profile.id}
                 </p>
               </>
-            ) : (
-              <>
-                <img
-                  src="https://gravatar.com/avatar/674acf50fc1be8e94658d58278307f5d?s=400&d=robohash&r=x"
-                  alt="avatar"
-                  className="avatar-img"
-                />
-              </>
-            )}
           </div>
           <button onClick={() => signOutUser()}>Sign Out</button>
         </>

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Card from '../components/Card'
 import Success from './Success'
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 import Loading from './Loading'
 
 const Home = () => {
@@ -12,7 +12,6 @@ const Home = () => {
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResults] = useState([]);
   const [loading, setLoading] = useState(false)
-  const user = useUser();
   const supabase = useSupabaseClient()
 
   useEffect(() => {

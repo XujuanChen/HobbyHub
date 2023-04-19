@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import supabase from "../config/supabaseClient";
 import Loading from "./Loading";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 
 const Comment = ({ cmt }) => {
   const supabase = useSupabaseClient()
