@@ -30,27 +30,25 @@ const Create = () => {
       });
     if (data) {
       setImages(data[0])
-      setLoading(false)
     } else {
       alert(error)
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   const uploadImage = async(e) => {
     setLoading(true)
     let file = e.target.files[0]
     const {data, error} = await supabase
-      .storage
-      .from("images")
-      .upload(user.id+"/"+uuidv4(),file)
-      if (data) {
-        getImages()
-        setLoading(false)
-      }else{
-        console.log(error)
-        setLoading(false)
-      }
+    .storage
+    .from("images")
+    .upload(user.id+"/"+uuidv4(),file)
+    if (data) {
+      getImages()
+    }else{
+      console.log(error)
+    }
+    setLoading(false)
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -58,7 +56,6 @@ const Create = () => {
       setFormError('Please fill in all the fields correctly.')
       return
     }
-    setLoading(true)
     const { data, error } = await supabase
       .from('recipes')
       .insert([{ title, method, rating, author:user.id, image_id:images?.name } ])
@@ -67,11 +64,9 @@ const Create = () => {
       console.log(data)
       setFormError(null)
       navigate('/article')
-      setLoading(false)
     } else {
       console.log(error)
       setFormError('Please fill in all the fields correctly.')
-      setLoading(false)
     }
   }
 
@@ -109,8 +104,8 @@ const Create = () => {
   return (
     <div className="page create">
       <h1 className="detail-content text-center">Create Your Post</h1>
-      <Loading loading={loading} />
       <form onSubmit={handleSubmit}>
+        { loading ? <Loading loading={loading}/> : null }
         <label htmlFor="title">Title:</label>
         <input 
           type="text" 
@@ -139,7 +134,6 @@ const Create = () => {
           value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
-
         <button>Create Your Post</button>
         {formError && <p className="error">{formError}</p>}
       </form>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from 'react-router-dom'
 // import supabase from "../config/supabaseClient"
 import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react"
+import Loading from "./Loading"
 
 const Update = () => {
   const { id } = useParams()
@@ -12,40 +13,38 @@ const Update = () => {
   const [rating, setRating] = useState('')
   const [author, setAuthor] = useState('')
   const [imgName, setImgName] = useState('')
-  const [videoname, setVideoname] = useState('')
+  // const [videoname, setVideoname] = useState('')
   const [formError, setFormError] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     if (!title || !method || !rating) {
       setFormError('Please fill in all the fields correctly.')
       return
     }
-
     const { data, error } = await supabase
       .from('recipes')
       .update({ title, method, rating, })
       .eq('id', id)
       .select()
-
-    if (error) {
-      setFormError('Please fill in all the fields correctly.')
-    }
     if (data) {
       setFormError(null)
       navigate('/article')
+    } else {
+      setFormError('Please fill in all the fields correctly.')
+      console.log(error)
     }
   }
 
   useEffect(() => {
+    setLoading(true)
     const fetchSmoothie = async () => {
       const { data, error } = await supabase
         .from('recipes')
         .select()
         .eq('id', id)
         .single()
-
       if (error) {
         navigate('/article', { replace: true })
       }
@@ -55,11 +54,11 @@ const Update = () => {
         setRating(data.rating)
         setAuthor(data.author)
         setImgName(data.image_id)
-        setVideoname(data.video_id)
+        // setVideoname(data.video_id)
       }
     }
-
     fetchSmoothie()
+    setLoading(false)
   }, [id, navigate])
 
   const handleDelete = async () => {
@@ -68,13 +67,10 @@ const Update = () => {
       .delete()
       .eq('id', id)
       .select()
-
       await supabase.storage.from('images')
       .remove([author+'/'+imgName])
-
-      await supabase.storage.from('videos')
-      .remove([videoname])
-    
+      // await supabase.storage.from('videos')
+      // .remove([videoname])
     if (error) {
       console.log(error)
     }
@@ -83,8 +79,8 @@ const Update = () => {
 
   return (
     <div className="page create">
-
       <div className="detail-content">
+        {loading?<Loading loading={loading} />: null}
         <h3>{title}</h3>
         <p>Description: {method}</p>
         <p>Rating: {rating}👍️ </p>

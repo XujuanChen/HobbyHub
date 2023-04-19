@@ -15,8 +15,8 @@ const Home = () => {
   const supabase = useSupabaseClient()
 
   useEffect(() => {
+    setLoading(true)
     const fetchSmoothies = async () => {
-      setLoading(true)
       const { data, error } = await supabase
         .from('recipes')
         .select()
@@ -25,15 +25,14 @@ const Home = () => {
       if (error) {
         setFetchError('Could not fetch the smoothies')
         setSmoothies(null)
-        setLoading(false)
       }
       if (data) {
         setSmoothies(data)
         setFetchError(null)
-        setLoading(false)
       }
     }
     fetchSmoothies()
+    setLoading(false)
   }, [orderBy])
 
   const handleInputChange = (searchValue) => {
@@ -49,12 +48,11 @@ const Home = () => {
   return (
     <div className="page home">
       <Success  />
-      <Loading loading={loading} />
-
       {fetchError && (<p>{fetchError}</p>)}
       {smoothies && (
         <div className="smoothies">
           <div className="order-by">
+          {loading?<Loading loading={loading} />:null}
             <p>Order by:</p>
             <button onClick={() => setOrderBy('created_at')}>Time Created</button>
             <button onClick={() => setOrderBy('title')}>Title</button>

@@ -29,8 +29,8 @@ const Details = () => {
       fetchComments();
     }, [id, navigate])
 
-    const fetchSmoothie = async() => {
-      setLoading(true)
+    const fetchSmoothie = async() => { 
+      setLoading(true)  
       const { data, error } = await supabase
       .from('recipes')
       .select()
@@ -42,13 +42,12 @@ const Details = () => {
         setRating(data.rating)
         setAuthor(data.author)
         setImgName(data.image_id)
-        setLoading(false)
         // console.log("details-author:",author)       
       } else {
         navigate('/article', { replace: true })
         console.log(error)
-        setLoading(false)
       }
+      setLoading(false)
     }
     
     const createComment = async (e) => {
@@ -70,11 +69,10 @@ const Details = () => {
       if (data) {
         setComments(data)
         // console.log("comments",comments)
-        setLoading(false)
       }else{
         console.log(error)
-        setLoading(false)
       }
+      setLoading(false)
     }
 
   return (
@@ -82,8 +80,10 @@ const Details = () => {
         <div className="detail-content">
             <Profile author={author} />
             <h3>{title}</h3>
-            {imgName? 
-            <img src={CDNURL+author+"/"+imgName} alt="image" style={{maxWidth:480, margin:"auto"}}/>
+            { imgName? 
+            <>
+              <img src={CDNURL+author+"/"+imgName} alt="image" style={{maxWidth:480, margin:"auto"}}/>
+            </>
             : null}
             {/* {videoname? 
             <>
@@ -93,10 +93,11 @@ const Details = () => {
               </video>
             </>           
             : null} */}
+            {loading?<Loading  loading={loading}/> : null}
             <p>Description: {method}</p>
             <p>Rating: {rating}👍️ </p>
         </div>
-        <Loading loading={loading} />
+  
         {comments && comments.map((ct)=> 
           <Comment key={ct.id} cmt = {ct} />
         )}

@@ -2,12 +2,14 @@ import React, { useState, useEffect, useReducer } from "react";
 // import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
+import Loading from "./Loading";
 
 const Success = () => {
   const navigate = useNavigate();
   const user = useUser();
   const supabase = useSupabaseClient()
   const [profile, setProfile] = useState("");
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -16,6 +18,7 @@ const Success = () => {
   }, [user]);
 
   const fetchAuthor = async () => {
+    setLoading(true)
     const { data, error } = await supabase
       .from("profiles")
       .select()
@@ -27,11 +30,11 @@ const Success = () => {
       console.log(error);
     }
     // console.log("success",session)
+    setLoading(false)
   };
 
   const signOutUser = async () => {
     await supabase.auth.signOut();
-
     navigate("/");
   };
 
@@ -41,6 +44,7 @@ const Success = () => {
         <>
           <div className="avatar-container">
               <>
+                {loading? <Loading loading={loading} /> : null}
                 <img src={profile.avatar} alt="avatar" className="avatar-img" />
                 <p className="avatar-text">
                   Welcome! {profile.name} : {profile.id}

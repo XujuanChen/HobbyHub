@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 // import supabase from "../config/supabaseClient";
 import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
+import Loading from "./Loading";
 
 const Profile = ({author}) => {
   const [profile, setProfile] = useState("");
   const supabase = useSupabaseClient()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (author) {
@@ -13,6 +15,7 @@ const Profile = ({author}) => {
   }, [author] );
 
   const fetchAuthor = async () => {
+    setLoading(true)
     const { data, error } = await supabase
       .from("profiles")
       .select()
@@ -24,12 +27,14 @@ const Profile = ({author}) => {
     } else {
       console.log(error);
     }
+    setLoading(false)
   };
 
   return (
     <div className="avatar-container">
       {profile ? (
         <>
+        {loading?<Loading  loading={loading}/> : null}
           <img src={profile.avatar} alt="avatar" className="avatar-img" />
           <p className="avatar-text">Author: {profile.name}</p>
         </>
